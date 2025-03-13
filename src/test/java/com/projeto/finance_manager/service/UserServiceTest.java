@@ -26,7 +26,7 @@ public class UserServiceTest {
     @Test
     public void deveSalvarUsuarioComSucesso() {
         // ARRANGE (Preparação)
-        User user = new User("Letícia", "leticia@email.com", "root");
+        User user = new User("Letícia", "leticia@email.com", "12345678");
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
         // ACT (Ação)
