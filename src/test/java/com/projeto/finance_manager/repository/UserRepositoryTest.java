@@ -1,7 +1,6 @@
 package com.projeto.finance_manager.repository;
 
 import com.projeto.finance_manager.model.User;
-import com.projeto.finance_manager.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
