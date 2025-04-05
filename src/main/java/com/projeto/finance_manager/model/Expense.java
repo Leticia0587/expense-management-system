@@ -1,15 +1,10 @@
 package com.projeto.finance_manager.model;
 
 import jakarta.persistence.*;
-import lombok.*;
 import java.time.LocalDate;
 
-@Entity
+@Entity // Essa anotação é obrigatória
 @Table(name = "expenses")
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-
 public class Expense {
 
     @Id
@@ -21,8 +16,44 @@ public class Expense {
     private LocalDate date;
     private String category;
 
-    // Relacionamento com o usuário
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    // Getters e Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 }
