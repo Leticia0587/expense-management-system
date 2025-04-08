@@ -1,5 +1,6 @@
 package com.projeto.finance_manager.repository;
 
+import com.projeto.finance_manager.model.Role;
 import com.projeto.finance_manager.model.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,89 +25,76 @@ public class UserRepositoryTest {
 
     @BeforeEach
     void setup() {
-        // Não definimos ID, pois ele será gerado automaticamente
-        user = new User(null, "João Silva", "joao@email.com");
+        // Usuário base para os testes
+        user = new User(null, "João Silva", "joao@email.com", "123456", null, Role.USER);
     }
 
     @Test
     public void deveSalvarUsuarioComSucesso() {
         // ARRANGE: Simulando o comportamento do método save()
         when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
-            User userToSave = invocation.getArgument(0);
-
-            // Simulando um ID gerado automaticamente pelo banco de dados (1L)
-            // Estamos criando um novo User com o ID e os valores necessários
-            return new User(userToSave.getName(), userToSave.getEmail(), userToSave.getPassword()) {
-                @Override
-                public Long getId() {
-                    return 1L; // Simulando o ID gerado automaticamente
-                }
-            };
+            User u = invocation.getArgument(0);
+            u.setId(1L); // Simula a atribuição de ID
+            return u;
         });
 
-        // Criando um usuário para salvar
-        User userToSave = new User("João Silva", "joao@email.com", "senha123");
-
         // ACT: Chamando o método
-        User savedUser = userRepository.save(userToSave);
+        User savedUser = userRepository.save(user);
 
         // ASSERT: Verificando o retorno esperado
-        assertThat(savedUser).isNotNull(); // Verifica que o objeto não é nulo
-        assertThat(savedUser.getId()).isNotNull(); // Verifica que o ID foi atribuído
-        assertThat(savedUser.getId()).isEqualTo(1L); // Verifica que o ID é o que simulamos
-        assertThat(savedUser.getName()).isEqualTo("João Silva"); // Verifica o nome
-        assertThat(savedUser.getEmail()).isEqualTo("joao@email.com"); // Verifica o email
-        assertThat(savedUser.getPassword()).isEqualTo("senha123"); // Verifica a senha
+        assertThat(savedUser).isNotNull();
+        assertThat(savedUser.getId()).isNotNull();
+        assertThat(savedUser.getId()).isEqualTo(1L);
+        assertThat(savedUser.getUsername()).isEqualTo("João Silva");
+        assertThat(savedUser.getEmail()).isEqualTo("joao@email.com");
+        assertThat(savedUser.getPassword()).isEqualTo("123456");
 
         // Verifica se o método foi chamado corretamente
         verify(userRepository, times(1)).save(any(User.class));
     }
 
-
-
     @Test
     public void deveEncontrarUsuarioPorId() {
-        // ARRANGE: Simulando o comportamento do método findById()
-        User userComId = new User("João Silva", "joao@email.com", "12345678");
+        // ARRANGE
+        User userComId = new User(1L, "João Silva", "joao@email.com", "12345678",null, Role.USER);
         when(userRepository.findById(1L)).thenReturn(Optional.of(userComId));
 
-        // ACT: Chamando o método
+        // ACT
         Optional<User> foundUser = userRepository.findById(1L);
 
-        // ASSERT: Verificando se o usuário foi encontrado
+        // ASSERT
         assertThat(foundUser).isPresent();
-        assertThat(foundUser.get().getName()).isEqualTo("João Silva");
+        assertThat(foundUser.get().getUsername()).isEqualTo("João Silva");
 
-        // Verifica se o método foi chamado
         verify(userRepository, times(1)).findById(1L);
     }
 
     @Test
     public void deveRetornarTodosOsUsuarios() {
-        // ARRANGE: Simulando o comportamento do método findAll()
+        // ARRANGE
         List<User> users = Arrays.asList(
-                new User("Carlos Santos", "carlos@email.com","12345678"),
-                new User("Ana Lima", "ana@email.com","12345678")
+                new User(1L, "Carlos Santos", "carlos@email.com", "12345678",null, Role.USER),
+                new User(2L, "Ana Lima", "ana@email.com", "12345678", null, Role.USER)
         );
         when(userRepository.findAll()).thenReturn(users);
 
-        // ACT: Chamando o método
+        // ACT
         List<User> result = userRepository.findAll();
 
-        // ASSERT: Verificando se a lista contém 2 usuários
+        // ASSERT
         assertThat(result).hasSize(2);
-        assertThat(result.get(0).getName()).isEqualTo("Carlos Santos");
+        assertThat(result.get(0).getUsername()).isEqualTo("Carlos Santos");
+        assertThat(result.get(1).getUsername()).isEqualTo("Ana Lima");
 
-        // Verifica se o método foi chamado
         verify(userRepository, times(1)).findAll();
     }
 
     @Test
     public void deveDeletarUsuarioComSucesso() {
-        // ACT: Chamando o método
+        // ACT
         userRepository.deleteById(1L);
 
-        // ASSERT: Verifica se o método foi chamado corretamente
+        // ASSERT
         verify(userRepository, times(1)).deleteById(1L);
     }
 }

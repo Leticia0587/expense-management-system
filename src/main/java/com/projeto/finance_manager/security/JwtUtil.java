@@ -1,23 +1,31 @@
 package com.projeto.finance_manager.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
-    private static final String SECRET_KEY = "seuSegredoSuperSecreto";
+
+    private SecretKey secretKey;
     private static final long EXPIRATION_TIME = 86400000; // 1 dia
+
+    @PostConstruct
+    public void init() {
+        // Gera uma chave segura de 256 bits para HS256
+        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    }
 
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .signWith(secretKey)
                 .compact();
     }
 
@@ -25,7 +33,7 @@ public class JwtUtil {
         return getClaims(token).getSubject();
     }
 
-    public boolean validateToken(String token, String username){
+    public boolean validateToken(String token, String username) {
         return (username.equals(extractUsername(token)) && !isTokenExpired(token));
     }
 
@@ -34,8 +42,9 @@ public class JwtUtil {
     }
 
     private Claims getClaims(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+        return Jwts.parserBuilder()
+                .setSigningKey(secretKey)
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

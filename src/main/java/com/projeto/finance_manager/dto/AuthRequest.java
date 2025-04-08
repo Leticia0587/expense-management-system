@@ -1,18 +1,10 @@
 package com.projeto.finance_manager.dto;
 
 public class AuthRequest {
-
     private String username;
     private String password;
 
-    public AuthRequest() {}
-
-    public AuthRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    // getters e setters
+    // Getters e Setters obrigatórios
     public String getUsername() {
         return username;
     }
@@ -21,7 +13,7 @@ public class AuthRequest {
         this.username = username;
     }
 
-    public String getPassword(){
+    public String getPassword() {
         return password;
     }
 

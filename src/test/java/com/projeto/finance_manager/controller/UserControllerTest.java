@@ -1,8 +1,10 @@
 package com.projeto.finance_manager.controller;
 
+import com.projeto.finance_manager.model.Role;
 import com.projeto.finance_manager.model.User;
 import com.projeto.finance_manager.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.validation.constraints.Null;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,8 +43,11 @@ public class UserControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Criando usuário sem ID, apenas nome, email e senha
-        user = new User("João Silva", "joao@email.com", "senha123");
+        // ARRANGE
+        user = new User();
+        user.setUsername("João Silva");
+        user.setEmail("joao@email.com");
+        user.setPassword("senha123");
     }
 
     @Test
@@ -55,7 +60,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(user)))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.name").value("João Silva"));
+                .andExpect(jsonPath("$.username").value("João Silva"));
     }
 
     @Test
@@ -83,8 +88,8 @@ public class UserControllerTest {
     public void deveRetornarTodosOsUsuarios() throws Exception {
         // ARRANGE
         List<User> users = Arrays.asList(
-                new User("Ana Lima", "ana@email.com", "senha123"),
-                new User("Carlos Souza", "carlos@email.com", "senha123")
+                new User(null, "Ana Lima", "ana@email.com", "senha123", null, Role.USER),
+                new User(null, "Carlos Souza", "carlos@email.com", "senha123", null,Role.USER)
         );
         when(userService.getAllUsers()).thenReturn(users);
 
@@ -97,7 +102,11 @@ public class UserControllerTest {
     @Test
     public void deveAtualizarUsuarioComSucesso() throws Exception {
         // ARRANGE
-        User updatedUser = new User("João Oliveira", "joao@email.com", "senha456");
+        User updatedUser = new User();
+        updatedUser.setUsername("João Oliveira");
+        updatedUser.setEmail("joao@email.com");
+        updatedUser.setPassword("senha456");
+
         when(userService.updateUser(eq(1L), any(User.class))).thenReturn(updatedUser);
 
         // ACT & ASSERT
@@ -105,7 +114,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updatedUser)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("João Oliveira"));
+                .andExpect(jsonPath("$.username").value("João Oliveira"));
     }
 
     @Test

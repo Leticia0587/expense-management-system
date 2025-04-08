@@ -26,7 +26,7 @@ public class UserServiceTest {
     @Test
     public void deveSalvarUsuarioComSucesso() {
         // ARRANGE (Preparação)
-        User user = new User("Letícia", "leticia@email.com", "12345678");
+        User user = new User(null,"Letícia", "leticia@email.com", "12345678", null,null);
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(user);
 
         // ACT (Ação)
@@ -34,7 +34,7 @@ public class UserServiceTest {
 
         // ASSERT (Verificação)
         assertNotNull(savedUser);
-        assertEquals("Letícia", savedUser.getName());
+        assertEquals("Letícia", savedUser.getUsername());
         assertEquals("leticia@email.com", savedUser.getEmail());
     }
 
