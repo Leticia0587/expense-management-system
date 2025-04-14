@@ -3,6 +3,7 @@ package com.projeto.finance_manager.security;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -11,13 +12,16 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
+    @Value("${jwt.secret}")
+    private String secret;
+
     private SecretKey secretKey;
     private static final long EXPIRATION_TIME = 86400000; // 1 dia
 
     @PostConstruct
     public void init() {
-        // Gera uma chave segura de 256 bits para HS256
-        this.secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        // Converte a string para uma chave segura
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes());
     }
 
     public String generateToken(String username) {
@@ -34,7 +38,7 @@ public class JwtUtil {
     }
 
     public boolean validateToken(String token, String username) {
-        return (username.equals(extractUsername(token)) && !isTokenExpired(token));
+        return username.equals(extractUsername(token)) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {

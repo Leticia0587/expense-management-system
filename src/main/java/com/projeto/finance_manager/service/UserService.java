@@ -30,9 +30,13 @@ public class UserService {
     }
 
     // Atualizar usuário
-    public User updateUser(Long id, User userDetails){
+    public User updateUser(Long id, User updatedUserData) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + id));
+
+        user.setUsername(updatedUserData.getUsername());
+        user.setEmail(updatedUserData.getEmail());
+        user.setPassword(updatedUserData.getPassword());
 
         return userRepository.save(user);
     }
