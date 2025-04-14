@@ -18,7 +18,7 @@ public class Expense {
     private Long id;
 
     private String description;
-    private Double amount;
+    private Double value;
     private LocalDate date;
     private String category;
 
