@@ -1,22 +1,22 @@
 package com.projeto.finance_manager.controller;
 
-import com.projeto.finance_manager.dto.ReportDTO;
+import com.projeto.finance_manager.dto.MonthlyStatsDTO;
 import com.projeto.finance_manager.service.ReportService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/reports")
 public class ReportController {
 
-    private final ReportService reportService;
+    @Autowired
+    private ReportService reportService;
 
-    public ReportController(ReportService reportService) {
-        this.reportService = reportService;
-    }
-
-    @GetMapping("/monthly-summary")
-    public ResponseEntity<ReportDTO> getMonthlySummary() {
-        return ResponseEntity.ok(reportService.getMonthlySummary());
+    @GetMapping("/monthly-stats")
+    public ResponseEntity<List<MonthlyStatsDTO>> getMonthlyStatistics() {
+        return ResponseEntity.ok(reportService.getMonthlyStatistics());
     }
 }
