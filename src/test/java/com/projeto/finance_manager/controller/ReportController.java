@@ -27,7 +27,7 @@ public class ReportController {
         Map<YearMonth, Double> summary = expenses.stream()
                 .collect(Collectors.groupingBy(
                         expense -> YearMonth.from(expense.getDate()),
-                        Collectors.summingDouble(Expense::getAmount)
+                        Collectors.summingDouble(expense -> expense.getValue().doubleValue()) // Conversão para double aqui
                 ));
 
         return ResponseEntity.ok(summary);
