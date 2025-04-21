@@ -14,13 +14,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.projeto.finance_manager.model.User user = (User) userRepository.findByUsername(username)
+        // ✅ Correção: Removido o cast desnecessário
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
                 .password(user.getPassword()) // já está criptografada com BCrypt
-                .roles(user.getRole().name()) // Ex: USER
+                .roles(user.getRole().name()) // Exemplo: USER, ADMIN
                 .build();
     }
 }
