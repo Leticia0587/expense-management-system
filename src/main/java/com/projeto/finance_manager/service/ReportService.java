@@ -1,50 +1,35 @@
 package com.projeto.finance_manager.service;
 
-import com.projeto.finance_manager.dto.ReportDTO;
-import com.projeto.finance_manager.model.Expense;
+import com.projeto.finance_manager.dto.MonthlyStatsDTO;
 import com.projeto.finance_manager.repository.ExpenseRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReportService {
 
-    private final ExpenseRepository expenseRepository;
+    @Autowired
+    private ExpenseRepository expenseRepository;
 
-    public ReportService(ExpenseRepository expenseRepository) {
-        this.expenseRepository = expenseRepository;
-    }
+    public List<MonthlyStatsDTO> getMonthlyStatistics() {
+        List<Object[]> results = expenseRepository.getMonthlyStatsRaw();
+        List<MonthlyStatsDTO> stats = new ArrayList<>();
 
-    public ReportDTO getMonthlySummary() {
-        List<Expense> expenses = expenseRepository.findAll();
+        for (Object[] row : results) {
+            String month = (String) row[0];
 
-        Map<String, BigDecimal> summary = new TreeMap<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+            // Conversões seguras:
+            BigDecimal total = BigDecimal.valueOf(((Number) row[1]).doubleValue());
+            Long count = ((Number) row[2]).longValue();
+            BigDecimal average = BigDecimal.valueOf(((Number) row[3]).doubleValue());
 
-        for (Expense expense : expenses) {
-            String month = expense.getDate().format(formatter);
-            summary.merge(month, BigDecimal.valueOf(expense.getValue()), BigDecimal::add);
+            stats.add(new MonthlyStatsDTO(month, total, count, average));
         }
 
-        String suggestion = generateSuggestion(summary);
-        return new ReportDTO(summary, suggestion);
-    }
-
-    private String generateSuggestion(Map<String, BigDecimal> summary) {
-        if (summary.isEmpty()) return "Sem despesas para analisar.";
-        List<BigDecimal> valores = new ArrayList<>(summary.values());
-        if (valores.size() < 2) return "Poucos dados para gerar sugestões.";
-
-        BigDecimal ultimo = valores.get(valores.size() - 1);
-        BigDecimal penultimo = valores.get(valores.size() - 2);
-
-        if (ultimo.compareTo(penultimo) > 0) {
-            return "🚨 Suas despesas aumentaram no último mês. Considere revisar seus gastos.";
-        } else {
-            return "✅ Parabéns! Suas despesas diminuíram no último mês. Continue assim!";
-        }
+        return stats;
     }
 }

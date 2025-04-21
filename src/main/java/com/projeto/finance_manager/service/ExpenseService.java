@@ -29,7 +29,7 @@ public class ExpenseService {
         Expense expense = expenseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Expense not found"));
         expense.setDescription(expenseDetails.getDescription());
-        expense.setAmount(expenseDetails.getAmount());
+        expense.setValue(expenseDetails.getValue());
         expense.setDate(expenseDetails.getDate());
         expense.setCategory(expenseDetails.getCategory());
         return expenseRepository.save(expense);
