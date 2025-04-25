@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
+// Entidade que representa o usuário do sistema.
 @Getter
 @Setter
 @NoArgsConstructor

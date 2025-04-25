@@ -1,7 +1,7 @@
 package com.projeto.finance_manager.dto;
 
 import java.math.BigDecimal;
-
+// DTO que representa estatísticas mensais de despesas.
 public class MonthlyStatsDTO {
 
     private String month;

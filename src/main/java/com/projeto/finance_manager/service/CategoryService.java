@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+// Serviço responsável pela lógica de negócio da entidade Category.
 @Service
 public class CategoryService {
 

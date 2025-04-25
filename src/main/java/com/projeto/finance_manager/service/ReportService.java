@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+// Serviço responsável pela geração de relatórios. Converte os dados brutos da query em objetos DTO.
 @Service
 public class ReportService {
 

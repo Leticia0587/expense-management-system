@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+// Serviço que lida com a lógica de negócio para despesas.
 @Service
 public class ExpenseService {
 

@@ -3,6 +3,7 @@ package com.projeto.finance_manager.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+// Entidade que representa uma categoria de despesa.
 @Entity
 @Table(name = "categories")
 @Data

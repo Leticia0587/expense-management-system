@@ -11,17 +11,22 @@ import java.util.List;
 @Configuration
 public class CorsConfig {
 
-        @Bean
-        public CorsFilter corsFilter() {
-            UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-            CorsConfiguration config = new CorsConfiguration();
+    @Bean
+    public CorsFilter corsFilter() {
+        // Fonte de configuração baseada na URL da aplicação
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-            config.setAllowedOrigins(List.of("*")); // Permite qualquer origem
-            config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-            config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        // Criação da configuração de CORS
+        CorsConfiguration config = new CorsConfiguration();
 
-            source.registerCorsConfiguration("/**", config);
-            return new CorsFilter();
-        }
+        config.setAllowedOrigins(List.of("*")); // Permite requisições de qualquer origem (não recomendado em produção)
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Métodos HTTP permitidos
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type")); // Cabeçalhos permitidos
+
+        // Aplica a configuração para todos os endpoints da aplicação
+        source.registerCorsConfiguration("/**", config);
+
+        // Retorna o filtro de CORS com a configuração aplicada
+        return new CorsFilter();
     }
-
+}

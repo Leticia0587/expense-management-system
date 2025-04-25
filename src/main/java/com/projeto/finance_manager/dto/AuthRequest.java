@@ -1,5 +1,6 @@
 package com.projeto.finance_manager.dto;
 
+// DTO para representar os dados de autenticação enviados pelo usuário (login).
 public class AuthRequest {
     private String username;
     private String password;

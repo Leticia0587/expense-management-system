@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+// Entidade que representa uma despesa do usuário.
 @Entity
 public class Expense {
 

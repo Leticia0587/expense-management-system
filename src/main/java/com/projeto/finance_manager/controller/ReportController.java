@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//Controller responsável por fornecer relatórios do sistema.
 @RestController
 @RequestMapping("/reports")
 public class ReportController {
@@ -15,6 +16,7 @@ public class ReportController {
     @Autowired
     private ReportService reportService;
 
+    // Retorna estatísticas mensais (ex: gastos por mês)
     @GetMapping("/monthly-stats")
     public ResponseEntity<List<MonthlyStatsDTO>> getMonthlyStatistics() {
         return ResponseEntity.ok(reportService.getMonthlyStatistics());

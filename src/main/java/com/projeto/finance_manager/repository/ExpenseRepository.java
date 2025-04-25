@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+// Repositório JPA para a entidade Expense. Inclui método customizado com @Query para estatísticas mensais.
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
 
     @Query("SELECT " +

@@ -1,5 +1,6 @@
 package com.projeto.finance_manager.dto;
 
+//DTO de resposta da autenticação retorna o token gerado após o login.
 public class AuthResponse {
     private String token;
 

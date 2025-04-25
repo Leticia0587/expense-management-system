@@ -12,10 +12,10 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.projeto.finance_manager.controller"))
-                .paths(PathSelectors.any())
-                .build();
+        return new Docket(DocumentationType.SWAGGER_2) // Define que será usado o Swagger 2
+                .select() // Inicia a seleção dos endpoints a serem documentados
+                .apis(RequestHandlerSelectors.basePackage("com.projeto.finance_manager.controller")) // Limita a documentação às classes dentro do pacote de controllers
+                .paths(PathSelectors.any()) // Documenta todos os caminhos disponíveis
+                .build(); // Constrói e retorna o objeto Docket
     }
 }

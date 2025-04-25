@@ -6,6 +6,7 @@ import lombok.Setter;
 import java.math.BigDecimal;
 import java.util.Map;
 
+// DTO que representa o resumo do relatório mensal.
 @Setter
 @Getter
 public class ReportDTO {
