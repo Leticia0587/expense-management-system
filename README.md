@@ -4,24 +4,6 @@ Um backend em Spring Boot para controle financeiro pessoal, com autenticação v
 
 ---
 
-## 📑 Sumário
-
-- [Sobre](#sobre)
-- [Features](#features)
-- [Tecnologias](#tecnologias)
-- [Arquitetura](#arquitetura)
-- [Instalação](#instalação)
-- [Configuração](#configuração)
-- [Uso](#uso)
-- [Endpoints da API](#endpoints-da-api)
-- [Testes](#testes)
-- [Segurança](#segurança)
-- [Contribuindo](#contribuindo)
-- [Licença](#licença)
-- [Autor](#autor)
-
----
-
 ## 🔍 Sobre
 
 O Finance Manager permite que usuários registrem e acompanhem suas despesas de forma segura e organizada, com acesso autenticado via token JWT. Inclui recursos de CRUD completo, categorização e estatísticas mensais.
